@@ -15,3 +15,7 @@ core.*
 .env
 .env.*
 !.env.example
+
+build-portable/
+.pytest_cache/
+*.egg-info/

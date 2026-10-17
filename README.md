@@ -14,7 +14,11 @@ flowchart TD
   D --> E["Browser detection console"]
 ```
 
-The implemented launcher accepts **one H.264 MP4**, not every camera protocol. RTSP, USB/CSI cameras and multiple streams are extension points. CCTV, roads, warehouses and drone imagery are potential application domains, not validated use cases.
+The launcher accepts **one H.264 MP4 or one H.264 RTSP stream**. USB/CSI cameras, authenticated camera provisioning, reconnection and multiple streams are extension points. CCTV, roads, warehouses and drone imagery are potential application domains, not validated use cases.
+
+## Build and run
+
+See the **[complete runbook](docs/runbook.md)** for shell scripts, dependency installation, file and RTSP pipelines, generated configs, cache behaviour and troubleshooting. The [example inference config](configs/infer-yolo.ini.example) documents the defaults.
 
 ## Try without a Jetson
 
@@ -80,7 +84,9 @@ ctest --test-dir build --output-on-failure
 python -m pytest -q
 ```
 
-Validated locally: portable C++ decoder (six synthetic scenarios), Python schema/cache/backpressure/origin checks, HTTP handlers, WebSocket frame delivery and real ZeroMQ pub/sub using in-process transport. This environment blocks TCP bind inside libzmq; the network test is documented as **unrun**, not passed. DeepStream/CUDA adapters and TensorRT engine generation have **not been compiled or executed on Jetson**. No FPS, latency or accuracy benchmark is claimed.
+Portable [CI](https://github.com/zohaibjan/jetson-edge-vision/actions/workflows/tests.yml) runs the C++ decoder, the real C++ ZeroMQ publisher over TCP, Python TCP/in-process transport and WebSocket integration, command/config generation, GStreamer core parsing of special paths, ShellCheck and shell syntax checks. These tests do not exercise NVIDIA inference.
+
+DeepStream/CUDA adapters and TensorRT engine generation have **not been compiled or executed on Jetson**. No real MP4/RTSP inference or FPS, latency or accuracy benchmark is claimed.
 
 See [target validation](docs/target-validation.md), [architecture decisions](docs/architecture.md) and [security](SECURITY.md).
 

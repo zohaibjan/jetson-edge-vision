@@ -1,6 +1,8 @@
 """Content-addressed inference configuration; nvinfer owns TensorRT construction."""
 import hashlib
 import json
+import os
+import tempfile
 from pathlib import Path
 
 def build_config(model: Path, labels: Path, parser: Path, cache: Path,
@@ -26,7 +28,7 @@ def build_config(model: Path, labels: Path, parser: Path, cache: Path,
     engine = folder / "model.engine"
     config = folder / "infer.ini"
     # No shell interpolation. The native SDK caches the serialized engine here.
-    config.write_text("\n".join([
+    contents = "\n".join([
         "[property]", "gpu-id=0", "batch-size=1", "network-type=0", "process-mode=1",
         "gie-unique-id=1", f"onnx-file={model.resolve()}", f"model-engine-file={engine}",
         f"labelfile-path={labels.resolve()}", f"num-detected-classes={len(names)}",
@@ -34,5 +36,15 @@ def build_config(model: Path, labels: Path, parser: Path, cache: Path,
         "network-mode=2" if fp16 else "network-mode=0", "net-scale-factor=0.00392156862745098",
         "model-color-format=0", "maintain-aspect-ratio=0", "cluster-mode=2",
         "", "[class-attrs-all]", "pre-cluster-threshold=0.25", "nms-iou-threshold=0.45", "topk=128", ""
-    ]), encoding="utf-8")
+    ])
+    # Readers see a complete INI even when configure-only is called concurrently.
+    with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=folder, delete=False) as handle:
+        temporary = Path(handle.name)
+        try:
+            handle.write(contents)
+            handle.flush()
+            os.fsync(handle.fileno())
+            os.replace(temporary, config)
+        finally:
+            temporary.unlink(missing_ok=True)
     return config, engine

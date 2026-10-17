@@ -1,0 +1,21 @@
+name: Portable tests
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  portable:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install portable dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake g++ pkg-config libzmq3-dev shellcheck gstreamer1.0-tools gstreamer1.0-plugins-base
+      - name: Create Python environment
+        run: scripts/setup-python.sh
+      - name: Run shell, C++ and Python integration tests
+        run: scripts/test.sh

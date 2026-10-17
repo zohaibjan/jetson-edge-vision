@@ -1,0 +1,24 @@
+# Template only. Generate the actual absolute paths/cache with generate-config.sh.
+# Label count, network dimensions and preprocessing MUST match your own ONNX export.
+[property]
+gpu-id=0
+batch-size=1
+network-type=0
+process-mode=1
+gie-unique-id=1
+onnx-file=/absolute/path/model.onnx
+model-engine-file=/absolute/path/target-cache/model.engine
+labelfile-path=/absolute/path/labels.txt
+num-detected-classes=3
+custom-lib-path=/absolute/path/build/libnvdsinfer_edge_yolo.so
+parse-bbox-func-name=NvDsInferParseEdgeYolo
+network-mode=2
+net-scale-factor=0.00392156862745098
+model-color-format=0
+maintain-aspect-ratio=0
+cluster-mode=2
+
+[class-attrs-all]
+pre-cluster-threshold=0.25
+nms-iou-threshold=0.45
+topk=128

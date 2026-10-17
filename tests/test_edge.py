@@ -64,13 +64,18 @@ def test_http_and_cross_origin_websocket():
             with client.websocket_connect("/ws",headers={"origin":"https://attacker.invalid"}):
                 pass
 
-def test_real_zeromq_to_subscriber():
+@pytest.mark.parametrize("transport", ["inproc", "tcp"])
+def test_real_zeromq_to_subscriber(transport):
     async def run():
         context=zmq.asyncio.Context()
         pub=context.socket(zmq.XPUB)
         pub.setsockopt(zmq.LINGER,0)
-        endpoint="inproc://edge-regression"
-        pub.bind(endpoint)
+        if transport == "tcp":
+            port = pub.bind_to_random_port("tcp://127.0.0.1")
+            endpoint = f"tcp://127.0.0.1:{port}"
+        else:
+            endpoint = "inproc://edge-regression"
+            pub.bind(endpoint)
         hub=Hub()
         task=asyncio.create_task(subscribe(endpoint,hub,context))
         try:
