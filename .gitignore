@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*.egg-info/
+build/
+.cache/
+core
+core.*
+*.onnx
+*.engine
+*.plan
+*.pt
+*.mp4
+.env
+.env.*
+!.env.example

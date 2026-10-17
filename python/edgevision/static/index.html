@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jetson Edge Vision · Detection Console</title><link rel="stylesheet" href="/static/app.css"></head>
+<body><header><a href="/" class="brand">EDGE<span>VISION</span></a><span class="tag">PUBLIC REFERENCE</span><span id="connection" role="status">Connecting…</span></header>
+<main><section class="intro"><p class="eyebrow">ON-DEVICE PERCEPTION / LIVE METADATA</p><h1>See the signal.<br><span>Keep inference at the edge.</span></h1><p>Object events from a Jetson pipeline, delivered to your browser. No camera video is transmitted by this demo.</p></section>
+<div class="metrics"><article><span>Source</span><strong id="source">Waiting</strong></article><article><span>Objects this frame</span><strong id="count">—</strong></article><article><span>Frame</span><strong id="frame">—</strong></article><article><span>Input mode</span><strong id="mode">No events</strong></article></div>
+<section class="workspace"><article class="viewer"><div class="panel-head"><h2>Detection plane</h2><span id="live">WAITING FOR PRODUCER</span></div><canvas id="plane" width="1280" height="720" aria-label="Detection boxes on a coordinate grid; metadata only"></canvas><p id="note">Start edge-simulate for synthetic events, or connect the target-device pipeline.</p></article>
+<article class="objects"><div class="panel-head"><h2>Detected objects</h2><span>THIS FRAME</span></div><div id="objects"><p class="empty">No detection events yet.</p></div></article></section>
+<section class="architecture"><span>CAMERA</span><b>→</b><span>DEEPSTREAM + YOLO</span><b>→</b><span>ZEROMQ</span><b>→</b><span>WEBSOCKET BRIDGE</span><b>→</b><span>THIS CONSOLE</span></section>
+<footer>Independent reference implementation · C / C++ / Python · Synthetic mode does not execute a model.<br>Hardware inference and frame rates require target-device validation.</footer></main><script src="/static/app.js"></script></body></html>
