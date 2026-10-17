@@ -1,6 +1,8 @@
 # Target-device acceptance checklist
 
-Status: target validation pending. Record board model, JetPack, DeepStream, CUDA, TensorRT, GPU mode and model/exporter versions.
+Portable validation: [GitHub Actions run 39000797020](https://github.com/zohaibjan/jetson-edge-vision/actions/runs/39000797020) passed on 17 October 2026: 27 Python tests, two C++ CTest executables, bash syntax and ShellCheck. Includes the actual native ZeroMQ publisher over TCP, Python TCP/in-process transport, WebSockets and GStreamer core parser integration.
+
+Status: NVIDIA target validation pending. Record board model, JetPack, DeepStream, CUDA, TensorRT, GPU mode and model/exporter versions.
 
 1. Compile BUILD_DEEPSTREAM=ON against the actual SDK. Check both plugin registrations with gst-inspect.
 2. Use a known, licensed ONNX model matching the documented tensor contract and an H.264 MP4 with known annotations.
@@ -12,4 +14,6 @@ Status: target validation pending. Record board model, JetPack, DeepStream, CUDA
 8. Test EOS, missing plugins, invalid ONNX, wrong labels, unwritable cache and port-in-use. Fail clearly; do not report a successful inference run.
 9. Record measured FPS/latency/resource usage only after testing. Keep hardware details, data provenance and cold/warm-engine timing with results.
 
-Do not claim this checklist has passed until evidence from the target is available.
+10. Test the H.264 RTSP pipeline with a controlled stream, confirm live timestamps and valid metadata, then disconnect the camera. Record failure behavior; automatic reconnection is not implemented.
+
+Do not claim the NVIDIA target checklist has passed until target-device evidence is available.

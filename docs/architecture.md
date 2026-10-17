@@ -8,3 +8,5 @@
 6. **Keep demonstration status visible.** Every frame contains a simulated boolean. The simulator always sets it true; the native exporter sets it false. The UI also marks stale inputs.
 
 Bounds: 128 objects/frame, 256 KiB/message, 32 ZMQ HWM, 16 browser connections, 2 queued frames/client. These limits do not constitute formal real-time guarantees.
+
+7. **Make launch commands inspectable.** The file and RTSP command builder passes argv without a shell and escapes GStreamer's own parser. Config writes are atomic, and an advisory cache lock prevents concurrent launchers from writing the same engine. Dry-run previews use a separate cache fingerprint and do not imply inference validation.
